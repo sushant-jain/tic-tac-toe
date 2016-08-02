@@ -1,0 +1,10 @@
+<resources>
+    <!-- Default screen margins, per the Android Design guidelines. -->
+    <dimen name="activity_horizontal_margin">20dp</dimen>
+    <dimen name="activity_vertical_margin">20dp</dimen>
+    <dimen name="text_size">30sp</dimen>
+    <dimen name="board">20sp</dimen>
+    <dimen name="Invicible">40sp</dimen>
+    <dimen name="tic">50sp</dimen>
+    <dimen name="player">35sp</dimen>
+</resources>
