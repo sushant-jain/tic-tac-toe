@@ -13,7 +13,7 @@ public class PlayerPojo {
     int engaged;
     int chance;
     int currentChance;
-    String opp;
+    String oppmail,oppUId;
     int row;
     int col;
 
@@ -28,13 +28,14 @@ public class PlayerPojo {
 
     }
 
-    public PlayerPojo(String email, int online, int engaged, int chance, int currentChance, String opp, int row, int col) {
+    public PlayerPojo(String email, int online, int engaged, int chance, int currentChance, String oppmail, String oppUId, int row, int col) {
         this.email = email;
         this.online = online;
         this.engaged = engaged;
         this.chance = chance;
         this.currentChance = currentChance;
-        this.opp = opp;
+        this.oppmail = oppmail;
+        this.oppUId = oppUId;
         this.row = row;
         this.col = col;
     }
@@ -54,7 +55,8 @@ public class PlayerPojo {
         result.put("engaged",engaged);
         result.put("chance",chance);
         result.put("currentChance",currentChance);
-        result.put("opp",opp);
+        result.put("oppmail",oppmail);
+        result.put("oppUid",oppUId);
         result.put("row",row);
         result.put("col",col);
         return result;

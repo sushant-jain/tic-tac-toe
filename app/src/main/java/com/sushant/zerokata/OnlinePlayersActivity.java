@@ -3,12 +3,15 @@ package com.sushant.zerokata;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -68,6 +71,29 @@ public class OnlinePlayersActivity extends AppCompatActivity {
 
             }
         });
+        
+        root.child(uId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                PlayerPojo ppx=dataSnapshot.getValue(PlayerPojo.class);
+                if(ppx.getEngaged()!=0){
+                    Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+        });
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String oppEmail=((TextView)view.findViewById(R.id.text1)).getText().toString();
+                onListClick(oppEmail);
+            }
+        });
 
 
     }
@@ -94,7 +120,7 @@ public class OnlinePlayersActivity extends AppCompatActivity {
                     Log.d(TAG, "onDataChange: email "+pp.getEmail()+" size= "+onlinePlayersArray.size()+"parent="+onlineUId);
                     playerHashMap.put(pp.getEmail(),onlineUId);
 
-                    Toast.makeText(OnlinePlayersActivity.this, "email"+pp.getEmail(), Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(OnlinePlayersActivity.this, "email"+pp.getEmail(), Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
@@ -106,5 +132,14 @@ public class OnlinePlayersActivity extends AppCompatActivity {
 
         }//adapter.notifyDataSetChanged();
         Log.d(TAG, "readOnlinePlayers: final array size"+onlinePlayersArray.size());
+    }
+
+    void onListClick(String oppEmail){
+        //String oppEmail=((TextView)view).getText().toString();
+        PlayerPojo oppPlayer=new PlayerPojo(oppEmail,1,1,1,1,mail,playerHashMap.get(mail),-1,-1);
+        root.child(playerHashMap.get(oppEmail)).updateChildren(oppPlayer.gameStartMapper());
+
+        PlayerPojo thisPlayer=new PlayerPojo(mail,1,1,2,1,oppEmail,playerHashMap.get(oppEmail),-1,-1);
+        root.child(playerHashMap.get(mail)).updateChildren(thisPlayer.gameStartMapper());
     }
 }
