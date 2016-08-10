@@ -6,5 +6,5 @@
     <dimen name="board">20sp</dimen>
     <dimen name="Invicible">40sp</dimen>
     <dimen name="tic">50sp</dimen>
-    <dimen name="player">35sp</dimen>
+    <dimen name="player">25sp</dimen>
 </resources>

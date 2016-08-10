@@ -95,6 +95,11 @@ public class SignInActivity extends AppCompatActivity {
                             progressDialog.dismiss();
                             if(taskRegister.isSuccessful()){
                                 Toast.makeText(SignInActivity.this, "Registered new user", Toast.LENGTH_SHORT).show();
+
+                                Map<String,Object> map=new HashMap<>();
+                                map.put(firebaseAuth.getCurrentUser().getUid(),"");
+                                root.updateChildren(map);
+
                                 onSignInCompletion(firebaseAuth.getCurrentUser().getEmail(),firebaseAuth.getCurrentUser().getUid());
                             }
                             else{

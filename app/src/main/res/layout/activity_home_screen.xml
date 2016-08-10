@@ -40,6 +40,7 @@
         android:textSize="@dimen/player"
         android:background="@drawable/shape2"
         android:layout_marginTop="60dp"
+        android:ems="6"
         />
     <Button
         android:id="@+id/player2"
@@ -51,6 +52,19 @@
         android:padding="15dp"
         android:textSize="@dimen/player"
         android:background="@drawable/shape2"
-        android:layout_marginTop="28dp"/>
+        android:layout_marginTop="20dp"
+        android:ems="6"/>
+    <Button
+        android:id="@+id/playerOnline"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ONLINE"
+        android:textColor="@color/white"
+        android:layout_gravity="center"
+        android:padding="15dp"
+        android:textSize="@dimen/player"
+        android:background="@drawable/shape2"
+        android:layout_marginTop="20dp"
+        android:ems="6"/>
 
 </LinearLayout>

@@ -9,21 +9,27 @@ import java.util.Map;
 public class PlayerPojo {
 
     String email;
-    int online;
-    int engaged;
-    int chance;
-    int currentChance;
+    Integer online;
+    Integer engaged;
+    Integer chance;
+    Integer currentChance;
     String oppmail,oppUId;
-    int row;
-    int col;
+    Integer row;
+    Integer col;
 
     public PlayerPojo() {
     }
 
-    public PlayerPojo(String email, int online,int engaged) {
+    public PlayerPojo(String email, Integer online,Integer engaged) {
         this.email = email;
         this.online = online;
         this.engaged=engaged;
+        this.chance=-1;
+        this.currentChance=-1;
+        oppmail="";
+        oppUId="";
+        row=-1;
+        col=-1;
 
 
     }
@@ -56,7 +62,7 @@ public class PlayerPojo {
         result.put("chance",chance);
         result.put("currentChance",currentChance);
         result.put("oppmail",oppmail);
-        result.put("oppUid",oppUId);
+        result.put("oppUId",oppUId);
         result.put("row",row);
         result.put("col",col);
         return result;
@@ -80,5 +86,33 @@ public class PlayerPojo {
 
     public int getCurrentChance() {
         return currentChance;
+    }
+
+    public String getOppmail() {
+        return oppmail;
+    }
+
+    public String getOppUId() {
+        return oppUId;
+    }
+
+    public int getRow() {
+        return row;
+    }
+
+    public int getCol() {
+        return col;
+    }
+
+    public void setRow(int row) {
+        this.row = row;
+    }
+
+    public void setCol(int col) {
+        this.col = col;
+    }
+
+    public void setCurrentChance(int currentChance) {
+        this.currentChance = currentChance;
     }
 }

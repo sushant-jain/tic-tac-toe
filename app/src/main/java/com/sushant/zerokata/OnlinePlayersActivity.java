@@ -1,5 +1,7 @@
 package com.sushant.zerokata;
 
+import android.content.Intent;
+import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -18,6 +20,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -62,6 +65,9 @@ public class OnlinePlayersActivity extends AppCompatActivity {
         root.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+
+                playerHashMap.clear();
+                Log.d(TAG, "onDataChange: hashmap cleared ="+playerHashMap.size());
                 readOnlinePlayers(dataSnapshot);
 
             }
@@ -71,13 +77,38 @@ public class OnlinePlayersActivity extends AppCompatActivity {
 
             }
         });
-        
+
         root.child(uId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 PlayerPojo ppx=dataSnapshot.getValue(PlayerPojo.class);
                 if(ppx.getEngaged()!=0){
-                    Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
+                    root.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            PlayerPojo ppy=dataSnapshot.getValue(PlayerPojo.class);
+                            Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
+                            Intent intent=new Intent(OnlinePlayersActivity.this,OnlineGameActivity.class);
+                            intent.putExtra("UID",uId);
+                            intent.putExtra("OPPUID",ppy.getOppUId());
+                            intent.putExtra("OPPMAIL",ppy.getOppmail());
+                            Log.d(TAG, "onDataChange: oppmail= "+ppy.getOppmail());
+//                    if(ppx.getOppUId()!=null)
+                            startActivity(intent);
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError databaseError) {
+
+                        }
+                    });
+//                    Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
+//                    Intent intent=new Intent(OnlinePlayersActivity.this,OnlineGameActivity.class);
+//                    intent.putExtra("UID",uId);
+//                    intent.putExtra("OPPUID",ppx.getOppUId());
+//                    Log.d(TAG, "onDataChange: oppuid= "+ppx.getOppUId());
+////                    if(ppx.getOppUId()!=null)
+//                    startActivity(intent);
                 }
             }
 
@@ -103,6 +134,7 @@ public class OnlinePlayersActivity extends AppCompatActivity {
         onlinePlayersArray.clear();
         onlineUidArray.clear();
         playerHashMap.clear();
+        adapter.notifyDataSetChanged();
         Log.d(TAG, "readOnlinePlayers: array cleared"+onlinePlayersArray.size());
         while(it.hasNext()){
             final String onlineUId=((DataSnapshot) it.next()).getKey();
@@ -113,7 +145,7 @@ public class OnlinePlayersActivity extends AppCompatActivity {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
                     PlayerPojo pp=dataSnapshot2.getValue(PlayerPojo.class);
-                    if(!playerHashMap.containsKey(pp.getEmail())) {
+                    if(!playerHashMap.containsKey(pp.getEmail())&&(!mail.equals(pp.getEmail()))&&pp.getOnline()==1&&pp.getEngaged()==0) {
                         onlinePlayersArray.add(pp.getEmail());
                         adapter.notifyDataSetChanged();
                     }
@@ -137,9 +169,43 @@ public class OnlinePlayersActivity extends AppCompatActivity {
     void onListClick(String oppEmail){
         //String oppEmail=((TextView)view).getText().toString();
         PlayerPojo oppPlayer=new PlayerPojo(oppEmail,1,1,1,1,mail,playerHashMap.get(mail),-1,-1);
+        Log.d(TAG, "onListClick: opp engaged="+oppPlayer.getEngaged());
         root.child(playerHashMap.get(oppEmail)).updateChildren(oppPlayer.gameStartMapper());
 
         PlayerPojo thisPlayer=new PlayerPojo(mail,1,1,2,1,oppEmail,playerHashMap.get(oppEmail),-1,-1);
         root.child(playerHashMap.get(mail)).updateChildren(thisPlayer.gameStartMapper());
+
+        Intent intent=new Intent(this,OnlineGameActivity.class);
+        intent.putExtra("UID",playerHashMap.get(mail));
+        intent.putExtra("OPPUID",playerHashMap.get(oppEmail));
+        intent.putExtra("OPPMAIL",oppEmail);
+        Log.d(TAG, "onListClick: oppmail"+oppEmail);
+        Log.d(TAG, "onListClick: oppuid"+playerHashMap.get(oppEmail));
+//        intent.putExtra("oppPOJO", (Serializable) oppPlayer);
+
+ //       intent.putExtra("thisPOJO", (Parcelable) thisPlayer);
+
+        startActivity(intent);
+    }
+
+    @Override
+    protected void onPause() {
+//        Map<String,Object> map=new HashMap<>();
+//        map.put(uId,"");
+//        root.updateChildren(map);
+        child=root.child(uId);
+        PlayerPojo playerPojo=new PlayerPojo(mail,0,0);
+        Map<String,Object> map2=playerPojo.toMap();
+        child.updateChildren(map2);
+        super.onPause();
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        child=root.child(uId);
+        PlayerPojo playerPojo=new PlayerPojo(mail,1,0);
+        Map<String,Object> map2=playerPojo.toMap();
+        child.updateChildren(map2);
     }
 }

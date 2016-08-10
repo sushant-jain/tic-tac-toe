@@ -10,6 +10,7 @@ public class HomeScreen extends AppCompatActivity {
     public static final String player="player";
     Button p1;
     Button p2;
+    Button online;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -17,6 +18,7 @@ public class HomeScreen extends AppCompatActivity {
 
         p1= (Button) findViewById(R.id.player1);
         p2= (Button) findViewById(R.id.player2);
+        online= (Button) findViewById(R.id.playerOnline);
 
         final Intent intent=new Intent(this, MainActivity.class);
 
@@ -32,6 +34,12 @@ public class HomeScreen extends AppCompatActivity {
             public void onClick(View view) {
                 intent.putExtra(player,2);
                 startActivity(intent);
+            }
+        });
+        online.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(HomeScreen.this,SignInActivity.class));
             }
         });
     }
