@@ -86,15 +86,19 @@ public class OnlinePlayersActivity extends AppCompatActivity {
                     root.child(uId).addListenerForSingleValueEvent(new ValueEventListener() {
                         @Override
                         public void onDataChange(DataSnapshot dataSnapshot) {
-                            PlayerPojo ppy=dataSnapshot.getValue(PlayerPojo.class);
-                            Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
-                            Intent intent=new Intent(OnlinePlayersActivity.this,OnlineGameActivity.class);
-                            intent.putExtra("UID",uId);
-                            intent.putExtra("OPPUID",ppy.getOppUId());
-                            intent.putExtra("OPPMAIL",ppy.getOppmail());
-                            Log.d(TAG, "onDataChange: oppmail= "+ppy.getOppmail());
+                            try {
+                                PlayerPojo ppy = dataSnapshot.getValue(PlayerPojo.class);
+                                Toast.makeText(OnlinePlayersActivity.this, "Game Begins", Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(OnlinePlayersActivity.this, OnlineGameActivity.class);
+                                intent.putExtra("UID", uId);
+                                intent.putExtra("OPPUID", ppy.getOppUId());
+                                intent.putExtra("OPPMAIL", ppy.getOppmail());
+                                Log.d(TAG, "onDataChange: oppmail= " + ppy.getOppmail());
 //                    if(ppx.getOppUId()!=null)
-                            startActivity(intent);
+                                startActivity(intent);
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
                         }
 
                         @Override
@@ -144,14 +148,17 @@ public class OnlinePlayersActivity extends AppCompatActivity {
             child.addListenerForSingleValueEvent(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot2) {
-                    PlayerPojo pp=dataSnapshot2.getValue(PlayerPojo.class);
-                    if(!playerHashMap.containsKey(pp.getEmail())&&(!mail.equals(pp.getEmail()))&&pp.getOnline()==1&&pp.getEngaged()==0) {
-                        onlinePlayersArray.add(pp.getEmail());
-                        adapter.notifyDataSetChanged();
+                    try {
+                        PlayerPojo pp = dataSnapshot2.getValue(PlayerPojo.class);
+                        if (!playerHashMap.containsKey(pp.getEmail()) && (!mail.equals(pp.getEmail())) && pp.getOnline() == 1 && pp.getEngaged() == 0) {
+                            onlinePlayersArray.add(pp.getEmail());
+                            adapter.notifyDataSetChanged();
+                        }
+                        Log.d(TAG, "onDataChange: email " + pp.getEmail() + " size= " + onlinePlayersArray.size() + "parent=" + onlineUId);
+                        playerHashMap.put(pp.getEmail(), onlineUId);
+                    }catch (Exception e){
+                        e.printStackTrace();
                     }
-                    Log.d(TAG, "onDataChange: email "+pp.getEmail()+" size= "+onlinePlayersArray.size()+"parent="+onlineUId);
-                    playerHashMap.put(pp.getEmail(),onlineUId);
-
                     //Toast.makeText(OnlinePlayersActivity.this, "email"+pp.getEmail(), Toast.LENGTH_SHORT).show();
                 }
 
