@@ -21,6 +21,10 @@
         android:textSize="23sp"
         android:background="@drawable/shape2"
         android:padding="10dp"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"/>
     <ListView
         android:layout_width="match_parent"
         android:layout_height="370dp"
