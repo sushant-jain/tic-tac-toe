@@ -280,18 +280,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-//    void setView() {
-//        tv[0][0].findViewById(R.id.one);
-//        tv[0][1].findViewById(R.id.two);
-//        tv[0][2].findViewById(R.id.three);
-//        tv[1][0].findViewById(R.id.four);
-//        tv[1][1].findViewById(R.id.five);
-//        tv[1][2].findViewById(R.id.six);
-//        tv[2][0].findViewById(R.id.seven);
-//        tv[2][1].findViewById(R.id.eight);
-//        tv[2][2].findViewById(R.id.nine);
-//    }
-
     void setTv(int x, int y) {
         int zz=-1;
         if(chance==1||chance==3) zz=1;
