@@ -25,13 +25,13 @@ import java.util.Map;
 public class SignInActivity extends AppCompatActivity {
 
     private static final String TAG = "SignInActivity";
-    EditText emailEditText;
-    EditText passwordEditText;
-    Button loginButton;
-    ProgressDialog progressDialog;
-   FirebaseDatabase db=FirebaseDatabase.getInstance();
-    DatabaseReference root= db.getReference().getRoot();
-    DatabaseReference child;
+    private EditText emailEditText;
+    private EditText passwordEditText;
+    private Button loginButton;
+    private ProgressDialog progressDialog;
+    private FirebaseDatabase db=FirebaseDatabase.getInstance();
+    private DatabaseReference root= db.getReference().getRoot();
+    private DatabaseReference child;
 
     FirebaseAuth firebaseAuth;
     @Override
