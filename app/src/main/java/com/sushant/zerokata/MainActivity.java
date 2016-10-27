@@ -14,13 +14,13 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     public static final String TAG = "123";
-    int a[][];
-    int chance, count, t, times, p;
-    TextView tv[][];
-    TextView tvx;
-    Button restart;
+    private int a[][];
+    private int chance, count, t, times, p;
+    private TextView tv[][];
+    private TextView tvx;
+    private Button restart;
     public ArrayList<String> arrayList=new ArrayList<>();
-    Button list;
+    private Button list;
 
 //    public MainActivity() {
 //        a=new int[3][3];
